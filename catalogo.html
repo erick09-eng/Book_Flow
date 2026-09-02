@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <meta charset="UTF-8" /> 
+        <title>Catalogo</title>
+        <meta name="description" content="Catalogo de libros" /> 
+
+    </head>
+    
+    <body>
+
+        <header class="header">
+            <div class="header__container">
+                <a class="header__logo">BookFlow</a>
+                <nav class="header__nav">
+                    <a href="index.html">Inicio</a>
+                    <a href="catalogo.html">Catalogo</a>
+                    <a href="detalles.html">Detalles</a>
+                    <a href="biblioteca.html">Mi Biblioteca</a>
+                </nav>
+                <div class="header__actions">
+                    <button class="header__icon-btn" aria-label="Buscar">Buscar</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="catalog">
+            <div class="catalog__container">
+
+                <aside class="filters">
+
+                    <h2 class="filters__title">Filters</h2>
+
+                    <div class="filters__group">
+                        <h3 class="filters__subtitle">Availability</h3>
+                        <label class="filters__option">
+                            <input type="checkbox" class="filters__checkbox" checked /> Disponible
+                        </label>
+                        <label class="filters__option">
+                            <input type="checkbox" class="filters__checkbox" checked /> En Prestamo
+                        </label>
+                    </div>
+
+                    <div class="filters__group">
+                        <h3 class="filters__subtitle">Genre</h3>
+                        <label class="filters__option">
+                            <input type="checkbox" class="filters__checkbox" checked /> Fiction
+                        </label>
+                        <label class="filters__option">
+                            <input type="checkbox" class="filters__checkbox" checked /> Non-Fiction
+                        </label>
+                        <label class="filters__option">
+                            <input type="checkbox" class="filters__checkbox" checked /> Science
+                        </label>
+                        <label class="filters__option">
+                            <input type="checkbox" class="filters__checkbox" checked /> History
+                        </label>
+                        <label class="filters__option">
+                            <input type="checkbox" class="filters__checkbox" checked /> Philosophy
+                        </label>
+                    </div>
+
+                </aside>
+                
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p class="footer__logo">BookFlow</p>
+            <p class="footer__copy">© 2025 BookFlow Editorial. All rights reserved.</p>
+        </footer>
+
+    </body>
+</html>
