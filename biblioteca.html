@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookFlow - Mi Biblioteca</title>
+    <meta name="description" content="Mi biblioteca en BookFlow" />
+    <link rel="stylesheet" href="biblioteca.css" />
+
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header__container">
+            <a href="../index.html" class="header__logo">BookFlow</a>
+            <nav class="header__nav">
+                <a href="index.html">Inicio</a>
+                <a href="catalogo.html">Catalogo</a>
+                <a href="detalles.html">Detalles</a>
+                <a href="biblioteca.html">Mi Biblioteca</a>
+            </nav>
+            <div class="header__actions">
+                <button class="header__icon-btn" aria-label="Notificaciones">🔔</button>
+                <button class="header__icon-btn" aria-label="Favoritos">♡</button>
+                <button class="header__avatar" aria-label="Mi cuenta"></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="library">
+        <div class="library__container">
+
+            <h1 class="library__title">Mi Biblioteca</h1>
+
+            <nav class="library__tabs" aria-label="Secciones de la biblioteca">
+                <a href="#" class="library__tab library__tab--active">Préstamos Activos</a>
+                <a href="#" class="library__tab">Historial</a>
+                <a href="#" class="library__tab">Guardados</a>
+            </nav>
+
+            <section class="library__grid" aria-label="Préstamos activos">
+
+                <article class="loan-card">
+                    <div class="loan-card__cover loan-card__cover--design-patterns">
+                        <span class="loan-card__badge loan-card__badge--available">Disponible</span>
+                    </div>
+                    <h2 class="loan-card__title">The Architecture of the City</h2>
+                    <p class="loan-card__author">Aldo Rossi</p>
+                    <div class="loan-card__due">
+                        <span class="loan-card__due-label">Vence en 5 días</span>
+                        <span class="loan-card__due-date">24 Mar</span>
+                    </div>
+                    <button class="btn btn--renew">Renovar</button>
+                </article>
+
+                <article class="loan-card">
+                    <div class="loan-card__cover loan-card__cover--thinking-fast">
+                        <span class="loan-card__badge loan-card__badge--due-soon">Vence Pronto</span>
+                    </div>
+                    <h2 class="loan-card__title">Thinking, Fast and Slow</h2>
+                    <p class="loan-card__author">Daniel Kahneman</p>
+                    <div class="loan-card__due loan-card__due--urgent">
+                        <span class="loan-card__due-label">Vence en 2 días</span>
+                        <span class="loan-card__due-date">21 Mar</span>
+                    </div>
+                    <button class="btn btn--renew">Renovar</button>
+                </article>
+
+                <article class="loan-card">
+                    <div class="loan-card__cover loan-card__cover--overstory"></div>
+                    <h2 class="loan-card__title">The Overstory</h2>
+                    <p class="loan-card__author">Richard Powers</p>
+                    <div class="loan-card__due">
+                        <span class="loan-card__due-label">Vence en 14 días</span>
+                        <span class="loan-card__due-date">02 Abr</span>
+                    </div>
+                    <button class="btn btn--renew">Renovar</button>
+                </article>
+
+            </section>
+
+            <section class="library__empty">
+                <span class="library__empty-icon" aria-hidden="true">📚</span>
+                <h2 class="library__empty-title">¿Buscas más lecturas?</h2>
+                <p class="library__empty-text">
+                    Explora nuestro catálogo para encontrar tu próxima gran historia.
+                    Miles de títulos esperan a ser descubiertos.
+                </p>
+                <a href="../catalogo/catalogo.html" class="btn btn--outline">
+                    <span aria-hidden="true">🔍</span> Explorar Catálogo
+                </a>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p class="footer__logo">BookFlow</p>
+        <nav class="footer__links">
+            <a href="#">Sobre Nosotros</a>
+            <a href="#">Términos de Servicio</a>
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Contacto</a>
+        </nav>
+        <p class="footer__copy">© 2024 BookFlow Editorial. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
