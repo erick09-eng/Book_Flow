@@ -10,16 +10,55 @@
 
 <body>
 
-    <header> 
-        <h1>BookFlow</h1>
-        <nav> 
-            <a href="index.html">Inicio</a>
-            <a href="Catalogo.html">Catalogo</a>
-            <a href="Detalle.html">Detalles</a>
-            <a href="Mi_Biblioteca.html">Mi Biblioteca</a>
-            
-        </nav>
+    <header class="header">
+        <div class="header__container">
+            <a class="header__logo">BookFlow</a>
+            <nav class="header__nav">
+                <a href="index.html">Inicio</a>
+                <a href="catalogo.html">Catalogo</a>
+                <a href="detalle.html">Detalles</a>
+                <a href="biblioteca.html">Mi Biblioteca</a>
+            </nav>
+            <div class="header__actions">
+                <button class="header__icon-btn" aria-label="Buscar">Buscar</button>
+            </div>
+        </div>
     </header>
+
+    <section class="hero">
+        <div class="hero__content">
+            <h1 class="hero__title">
+                Encuentra tu proxima gran <span class="hero__title-accent">historia</span>
+            </h1>
+            <p class="hero__description">
+                Explora un catálogo curado de literatura contemporánea y clásicos
+                atemporales. Tu biblioteca personal, organizada con claridad y propósito.
+            </p>
+            <a href="catalogo.html" class="hero__cta">Explorar Catálogo <span aria-hidden="true">→</span></a>
+        </div>
+    </section>
+
+    <section class="recomendados">
+        <div class="recomendados__header">
+            <h2 class="recomendados__title">Lesturas Recomendadas</h2>
+            <a href="catalogo.html" class="recomendados__ver-todas">Ver todas<span aria-hidden="true">→</span></a>
+        </div>
+
+        <div class="recomendados__grid">
+            <article class="book-card">
+                <div class="book-card__cover">
+                    <span class="book-carda__badge">Destacado</span>
+                </div>
+                <h3 class="book-card__title">El eco de los dias</h3>
+                <p class="book-card__author">Maria sales</p>
+            </article>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p class="footer__logo">BookFlow</p>
+        <p class="footer__copy">© 2025 BookFlow Editorial. All rights reserved.</p>
+    </footer>
 
 </body>
 </html>
