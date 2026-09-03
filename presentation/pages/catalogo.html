@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <meta charset="UTF-8" /> 
+        <title>BookFlow-Catalogo</title>
+        <meta name="description" content="Catalogo de libros" /> 
+        <link rel="stylesheet" href="../styles/catalogo.css"> 
+    </head>
+    
+    <body>
+
+        <header class="header">
+            <div class="header__container">
+                <a class="header__logo">BookFlow</a>
+                <nav class="header__nav">
+                    <a href="index.html">Inicio</a>
+                    <a href="catalogo.html">Catalogo</a>
+                    <a href="detalle.html">Detalles</a>
+                    <a href="biblioteca.html">Mi Biblioteca</a>
+                </nav>
+                <div class="header__actions">
+                    <button class="header__icon-btn" aria-label="Buscar">Buscar</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="catalog">
+            <div class="catalog__container">
+
+                <aside class="filters">
+
+                    <h2 class="filters__title">Filters</h2>
+
+                    <div class="filters__group">
+                        <h3 class="filters__subtitle">Availability</h3>
+                        <label class="filters__option">
+                            <input type="checkbox" class="filters__checkbox" checked /> Disponible
+                        </label>
+                        <label class="filters__option">
+                            <input type="checkbox" class="filters__checkbox" checked /> En Prestamo
+                        </label>
+                    </div>
+
+                    <div class="filters__group">
+                        <h3 class="filters__subtitle">Genre</h3>
+                        <label class="filters__option">
+                            <input type="checkbox" class="filters__checkbox" checked /> Fiction
+                        </label>
+                        <label class="filters__option">
+                            <input type="checkbox" class="filters__checkbox" checked /> Non-Fiction
+                        </label>
+                        <label class="filters__option">
+                            <input type="checkbox" class="filters__checkbox" checked /> Science
+                        </label>
+                        <label class="filters__option">
+                            <input type="checkbox" class="filters__checkbox" checked /> History
+                        </label>
+                        <label class="filters__option">
+                            <input type="checkbox" class="filters__checkbox" checked /> Philosophy
+                        </label>
+                    </div>
+
+                    <div class="filters__group">
+                        <h3 class="filters__subtitle">Minimum Rating</h3>
+                        <input type="range" class="filters__range" min="1" max="5" value="1" />
+                        <div class="filters__range-labels">
+                            <span>1</span>
+                            <span>5</span>
+                        </div>
+                    </div>
+
+                </aside>
+                
+                <main class="catalog__content">
+
+                    <div class="catalog__topbar">
+                        <h1 class="catalog__title">Browse Catalog</h1>
+                        <div class="catalog__sort">
+                            <label for="sort-select" class="catalog__sort-label">Sort by:</label>
+                            <select id="sort-select" class="catalog__sort-select">
+                                <option value="recently-added">Recently Added</option>
+                                <option value="rating">Rating</option>
+                                <option value="title">Title A-Z</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="catalog__grid">
+                        <article class="book-card">
+                            <div class="book-card__cover">
+                                <span class="book-card__badge book-card__badge--disponible">Disponible</span>
+                            </div>
+                            <h3 class="book-card__title">The Design of Everyday Things</h3>
+                            <p class="book-card__author">Don Norman</p>
+                            <div class="book-card__rating" aria-label="5 de 5 estrellas">★★★★★</div>
+                        </article>
+
+                        <article class="book-card">
+                            <div class="book-card__cover">
+                                <span class="book-card__badge book-card__badge--disponible">Disponible</span>
+                            </div>
+                            <h3 class="book-card__title">Thinking, Fast and Slow</h3>
+                            <p class="book-card__author">Daniel Kahneman</p>
+                            <div class="book-card__rating" aria-label="5 de 5 estrellas">★★★★★</div>
+                        </article>
+
+                        <article class="book-card">
+                            <div class="book-card__cover">
+                                <span class="book-card__badge book-card__badge--disponible">Disponible</span>
+                            </div>
+                            <h3 class="book-card__title">Clean Code</h3>
+                            <p class="book-card__author">Robert Martin</p>
+                            <div class="book-card__rating" aria-label="5 de 5 estrellas">★★★★★</div>
+                        </article>
+
+                        <article class="book-card">
+                            <div class="book-card__cover">
+                                <span class="book-card__badge book-card__badge--disponible">Disponible</span>
+                            </div>
+                            <h3 class="book-card__title">Sapiens: A Brief History of Humankind</h3>
+                            <p class="book-card__author">Yuval Noah Harari</p>
+                            <div class="book-card__rating" aria-label="5 de 5 estrellas">★★★★★</div>
+                        </article>
+                    </div>
+
+                    <nav class="pagination" aria-label="Paginación de productos">
+                        <button class="pagination__btn pagination__btn--prev" aria-label="Anterior">&lt;</button>
+                        <button class="pagination__btn pagination__btn--active">1</button>
+                        <button class="pagination__btn">2</button>
+                        <button class="pagination__btn">3</button>
+                        <span class="pagination__dots">...</span>
+                        <button class="pagination__btn pagination__btn--next" aria-label="Siguiente">&gt;</button>
+                    </nav>
+
+                </main>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p class="footer__logo">BookFlow</p>
+            <p class="footer__copy">© 2025 BookFlow Editorial. All rights reserved.</p>
+        </footer>
+
+    </body>
+</html>
