@@ -1,0 +1,91 @@
+@import './base.css';
+@import '../components/header/header.css';
+@import '../components/product-card/product-card.css';
+@import '../components/footer/footer.css';
+
+/* Layout del Catálogo */
+.catalog {
+    max-width: var(--max-width);
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.catalog__container {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 2rem;
+}
+
+/* Sidebar de Filtros */
+.filters {
+    background-color: var(--color-card);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.filters__title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+}
+
+.filters__subtitle {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    letter-spacing: 1px;
+    margin-bottom: 0.8rem;
+}
+
+.filters__option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+    cursor: pointer;
+}
+
+/* Grilla del Catálogo y Topbar */
+.catalog__topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.catalog__title {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+}
+
+.catalog__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Paginación */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+}
+
+.pagination__btn {
+    background-color: var(--color-card);
+    border: none;
+    color: var(--color-text-main);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.pagination__btn--active {
+    background-color: var(--color-accent-orange);
+}
+

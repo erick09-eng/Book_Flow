@@ -1,0 +1,17 @@
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  max-width: var(--max-width);
+  margin: 4rem auto 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.footer__logo {
+  font-family: var(--font-heading);
+  font-weight: bold;
+  color: var(--text-main);
+}
