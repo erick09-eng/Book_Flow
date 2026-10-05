@@ -1,0 +1,37 @@
+@import './base.css';
+@import '../components/header/header.css';
+@import '../components/footer/footer.css';
+@import '../components/button/button.css';
+@import '../components/forms/forms.css';
+@import '../components/modal/modal.css';
+@import '../components/toast/toast.css';
+@import '../components/tabs/tabs.css';
+
+.panel--wide { max-width: 680px; }
+
+/* Estadísticas */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+
+.stats__item {
+    background: var(--color-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 0.9rem;
+    text-align: center;
+}
+.stats__value { display: block; font-family: var(--font-heading); font-size: 1.5rem; }
+.stats__label { color: var(--color-text-muted); font-size: 0.8rem; }
+
+/* Datos de la cuenta */
+.account__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.95rem;
+}
+.account__row dt { color: var(--color-text-muted); }
+
+/* Botones: modificar, contraseña, cerrar sesión, eliminar */
+.account__actions { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 0.5rem; }

@@ -1,0 +1,16 @@
+.toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 60;
+    display: none;
+    padding: 0.8rem 1.3rem;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-card);
+    border: 1px solid var(--border-subtle);
+}
+
+.toast.is-on { display: block; }
+.toast--ok  { border-color: var(--badge-disponible-text); }
+.toast--err { border-color: #f87171; }

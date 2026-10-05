@@ -1,65 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-
-    <meta charset="UTF-8" /> 
-    <title>BookFlow</title>
-    <meta name="description" content="Pagina principal de BookFlow" />
-    <link rel="stylesheet" href="../styles/index.css"> 
-    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookFlow - Inicio</title>
+    <link rel="stylesheet" href="../styles/index.css">
 </head>
-
 <body>
-
-    <header class="header">
-        <div class="header__container">
-            <a class="header__logo" class="header__logo">BookFlow</a>
-            <nav class="header__nav">
-                <a href="index.html">Inicio</a>
-                <a href="catalogo.html">Catalogo</a>
-                <a href="detalles.html">Detalles</a>
-                <a href="biblioteca.html">Mi Biblioteca</a>
-            </nav>
-            <div class="header__actions">
-                <button class="header__icon-btn" aria-label="Buscar">Buscar</button>
+    <!-- El header y el footer los inserta js/app.js -->
+    <main>
+        <section class="hero">
+            <div class="hero__content">
+                <h1 class="hero__title">Encuentra tu próxima gran <span class="hero__title-accent">historia</span></h1>
+                <p class="hero__description">Explora un catálogo curado de literatura contemporánea y clásicos atemporales. Pide préstamos, guarda tus favoritos y mantén tu biblioteca personal organizada.</p>
+                <a href="catalogo.html" class="hero__cta">Explorar catálogo <span aria-hidden="true">→</span></a>
             </div>
-        </div>
-    </header>
+            <div class="hero__stack" aria-hidden="true"><i></i><i></i><i></i></div>
+        </section>
 
-    <section class="hero">
-        <div class="hero__content">
-            <h1 class="hero__title">
-                Encuentra tu proxima gran <span class="hero__title-accent">historia</span>
-            </h1>
-            <p class="hero__description">
-                Explora un catálogo curado de literatura contemporánea y clásicos
-                atemporales. Tu biblioteca personal, organizada con claridad y propósito.
-            </p>
-            <a href="catalogo.html" class="hero__cta">Explorar Catálogo <span aria-hidden="true">→</span></a>
-        </div>
-    </section>
+        <section class="recomendados">
+            <div class="recomendados__header">
+                <h2 class="recomendados__title">Lecturas recomendadas</h2>
+                <a href="catalogo.html" class="recomendados__ver-todas">Ver todas →</a>
+            </div>
+            <div class="grid" id="featured"></div>
+        </section>
 
-    <section class="recomendados">
-        <div class="recomendados__header">
-            <h2 class="recomendados__title">Lesturas Recomendadas</h2>
-            <a href="catalogo.html" class="recomendados__ver-todas">Ver todas<span aria-hidden="true">→</span></a>
-        </div>
+        <section class="pasos">
+            <h2 class="pasos__title">Cómo funciona</h2>
+            <div class="pasos__grid">
+                <article class="paso"><h3>1. Crea tu cuenta</h3><p class="muted">Regístrate gratis para pedir libros y guardar tus favoritos.</p></article>
+                <article class="paso"><h3>2. Elige tus libros</h3><p class="muted">Busca y filtra el catálogo por género, disponibilidad y calificación.</p></article>
+                <article class="paso"><h3>3. Gestiona tu biblioteca</h3><p class="muted">Renueva o devuelve tus préstamos desde tu perfil.</p></article>
+            </div>
+        </section>
 
-        <div class="recomendados__grid">
-            <article class="book-card">
-                <div class="book-card__cover">
-                    <span class="book-carda__badge">Destacado</span>
-                </div>
-                <h3 class="book-card__title">El eco de los dias</h3>
-                <p class="book-card__author">Maria sales</p>
-            </article>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <p class="footer__logo">BookFlow</p>
-        <p class="footer__copy">© 2025 BookFlow Editorial. All rights reserved.</p>
-    </footer>
-
+        <section class="register" id="register-section">
+            <div class="panel" id="registro">
+                <a href="#" id="back-top" class="muted">← Atrás</a>
+                <h2 class="panel__title">Crea tu cuenta</h2>
+                <p class="muted">Regístrate para pedir libros y gestionar tus préstamos.</p>
+                <div class="google-slot" id="google-register"></div>
+                <p class="divider"><span>o con tu correo</span></p>
+                <form id="register-form" class="form" novalidate>
+                    <label class="field">Nombre completo<input type="text" name="name" autocomplete="name" required /></label>
+                    <label class="field">Correo electrónico<input type="email" name="email" autocomplete="email" required /></label>
+                    <label class="field">Contraseña<input type="password" name="password" autocomplete="new-password" minlength="6" required /></label>
+                    <label class="field">Confirmar contraseña<input type="password" name="confirm" autocomplete="new-password" required /></label>
+                    <p class="msg" role="alert"></p>
+                    <button type="submit" class="btn btn--primary">Crear cuenta</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <script src="../js/service/storage.js"></script>
+    <script src="../js/service/bookService.js"></script>
+    <script src="../js/service/loanService.js"></script>
+    <script src="../js/service/favoriteService.js"></script>
+    <script src="../js/service/userService.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/app.js"></script>
 </body>
 </html>
