@@ -14,6 +14,14 @@
       liked ? set.add(Number(id)) : set.delete(Number(id));
       data[email] = [...set];
       storage.set(KEY, data);
+
+      // Replicar favorito en Supabase (no bloqueante)
+      if (BookFlow.supabase?.isReady) {
+        liked
+          ? BookFlow.supabase.insertFavorite(email, id).catch(() => {})
+          : BookFlow.supabase.removeFavorite(email, id).catch(() => {});
+      }
+
       return ok({ liked });
     },
     list: (email) => svc.ids(email).map((id) => BookFlow.books.get(id)).filter(Boolean),

@@ -40,6 +40,12 @@
         renewals: 0, status: 'active', returnedAt: null,
       };
       save([...all(), loan]);
+
+      // Replicar préstamo en Supabase (no bloqueante)
+      if (BookFlow.supabase?.isReady) {
+        BookFlow.supabase.insertLoan(loan).catch(() => {});
+      }
+
       return ok(loan);
     },
 
@@ -53,6 +59,12 @@
       loan.renewals += 1;
       loan.dueDate = addDays(loan.dueDate, RENEW_DAYS);
       save(list);
+
+      // Replicar renovación en Supabase (no bloqueante)
+      if (BookFlow.supabase?.isReady) {
+        BookFlow.supabase.updateLoan(loan.id, { renewals: loan.renewals, due_date: loan.dueDate }).catch(() => {});
+      }
+
       return ok(loan);
     },
 
@@ -64,6 +76,12 @@
       loan.status = 'returned';
       loan.returnedAt = new Date().toISOString();
       save(list);
+
+      // Replicar devolución en Supabase (no bloqueante)
+      if (BookFlow.supabase?.isReady) {
+        BookFlow.supabase.updateLoan(loan.id, { status: 'returned', returned_at: loan.returnedAt }).catch(() => {});
+      }
+
       return ok(loan);
     },
 
