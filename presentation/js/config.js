@@ -9,4 +9,24 @@ window.BOOKFLOW_CONFIG = {
     templateId: '',                // ej: 'template_xxxxxxx'
     publicKey: '',                 // ej: 'AbCdEfGhIjKlMnOp'
   },
+
+  // Configuración de Supabase
+  SUPABASE: {
+    url: 'https://bdjwpdwlheocnenszprh.supabase.co',      // Tu Project URL de Supabase
+    anonKey: 'sb_publishable_XeMvR31qNv_JNiwoD_Rr5w_47Lresro',            // Tu anon/public key de Supabase
+  },
+
+  // API de libros: datos de libros-programacion-gratis (midudev) embalados en JSON local.
+  BOOKS_API: {
+    baseUrl: '../js/service/libros-api.json',
+    coversUrl: '',
+  }
 };
+
+// Inicializar la instancia del cliente Supabase si el CDN de Supabase está cargado en el HTML
+if (window.supabase) {
+  window.supabaseClient = window.supabase.createClient(
+    window.BOOKFLOW_CONFIG.SUPABASE.url,
+    window.BOOKFLOW_CONFIG.SUPABASE.anonKey
+  );
+}
