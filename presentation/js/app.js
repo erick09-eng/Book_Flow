@@ -90,7 +90,13 @@ window.BookFlow.books = window.BookFlow.books || { all() { return []; }, get() {
       const p = decodeJwt(credential);
       if (p.email_verified === false) return toast('Tu correo de Google no está verificado.', false);
       const r = users.loginWithGoogle({ name: p.name, email: p.email });
-      r.ok ? (location.href = 'cuenta.html') : toast(r.error, false);
+      if (r.ok) {
+        // Replicar perfil de Google en Supabase (no bloqueante)
+        if (BookFlow.supabase?.isReady) {
+          BookFlow.supabase.upsertProfile({ email: p.email, name: p.name, since: new Date().toISOString(), google: true }).catch(() => {});
+        }
+        location.href = 'cuenta.html';
+      } else toast(r.error, false);
     } catch { toast('No se pudo iniciar sesión con Google.', false); }
   }
   function googleButton(el) {
