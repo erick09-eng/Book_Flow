@@ -42,6 +42,18 @@
       const user = { name, email, salt, pass: await hash(salt + password), since: new Date().toISOString() };
       storage.set(KEY, [...list(), user]);
       storage.set(SESSION, email);
+
+      // Replicar perfil en Supabase (debug: se muestra el error en consola)
+      if (BookFlow.supabase?.isReady) {
+        const r = await BookFlow.supabase.upsertProfile({
+          email, name, since: user.since, google: false,
+        });
+        if (r.ok) console.log('[Supabase] Perfil guardado:', r.data);
+        else console.error('[Supabase] Error guardando perfil:', r.error);
+      } else {
+        console.warn('[Supabase] No está listo, perfil solo en localStorage.');
+      }
+
       return ok(pub(user));
     },
 
@@ -51,6 +63,15 @@
       if (user && !user.pass) return fail('Esta cuenta usa Google. Ingresa con Google o usa "¿Olvidaste tu contraseña?" para crear una contraseña.');
       if (!user || user.pass !== (await hash(user.salt + password))) return fail('Correo o contraseña incorrectos.');
       storage.set(SESSION, email);
+
+      // Replicar perfil en Supabase (no bloqueante)
+      if (BookFlow.supabase?.isReady) {
+        const profile = await BookFlow.supabase.getProfile(email);
+        if (!profile.ok) {
+          BookFlow.supabase.upsertProfile({ email, name: user.name, since: user.since, google: false }).catch(() => {});
+        }
+      }
+
       return ok(pub(user));
     },
 
@@ -65,6 +86,12 @@
         storage.set(KEY, [...users, u]);
       }
       storage.set(SESSION, email);
+
+      // Replicar perfil en Supabase (no bloqueante)
+      if (BookFlow.supabase?.isReady) {
+        BookFlow.supabase.upsertProfile({ email, name: u.name, since: u.since, google: true }).catch(() => {});
+      }
+
       return ok(pub(u));
     },
 

@@ -1,11 +1,13 @@
 /* BookFlow - Interfaz. Usa los servicios de /services (users, loans, favorites, books). */
 /* Si los servicios no cargaron (rutas mal o app.js viejo), avisa en pantalla en vez de dejar la página en blanco */
-if (!window.BookFlow || !BookFlow.users || !BookFlow.loans || !BookFlow.favorites || !BookFlow.books) {
-  document.body.insertAdjacentHTML('afterbegin', '<p style="padding:1rem;background:#7f1d1d;color:#fecaca;font-family:sans-serif">BookFlow: no se cargaron los servicios. Abre la consola (F12) y revisa que existan las rutas ../js/service/ (storage.js, bookService.js, loanService.js, favoriteService.js, userService.js) y que app.js sea el nuevo.</p>');
-  throw new Error('BookFlow: servicios no cargados');
-}
-
-(() => {
+// Asegurar que BookFlow exista y tenga todas las propiedades m�nimas
+window.BookFlow = window.BookFlow || {};
+window.BookFlow.users = window.BookFlow.users || { current() { return null; } };
+window.BookFlow.loans = window.BookFlow.loans || { active() { return []; }, request() { return null; }, returnBook() { return null; }, renew() { return null; }, MAX_ACTIVE: 3 };
+window.BookFlow.favorites = window.BookFlow.favorites || { isLiked() { return false; }, toggle() { return { ok: { liked: false } } }, list() { return []; } };
+window.BookFlow.books = window.BookFlow.books || { all() { return []; }, get() { return null; } };
+(async () => {
+  await BookFlow.books._load();
   const { users, loans, favorites, books } = BookFlow;
   const page = location.pathname.split('/').pop() || 'index.html';
   const $ = (s, r = document) => r.querySelector(s);
@@ -13,6 +15,11 @@ if (!window.BookFlow || !BookFlow.users || !BookFlow.loans || !BookFlow.favorite
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const fmt = (iso) => new Date(iso).toLocaleDateString('es', { day: '2-digit', month: 'short', year: 'numeric' });
   const fd = (f) => Object.fromEntries(new FormData(f));
+  // Resuelve hrefs relativos de libros-programacion-gratis a la URL completa de librosgratis.dev
+  const resolveHref = (href) => {
+    if (!href) return '';
+    return /^https?:\/\//i.test(href) ? href : `https://librosgratis.dev${href}`;
+  };
   const user = users.current();
   let rerender = () => {};   // cada página define cómo se vuelve a pintar
   let openBook = null;       // libro cuyo modal está abierto
@@ -83,7 +90,13 @@ if (!window.BookFlow || !BookFlow.users || !BookFlow.loans || !BookFlow.favorite
       const p = decodeJwt(credential);
       if (p.email_verified === false) return toast('Tu correo de Google no está verificado.', false);
       const r = users.loginWithGoogle({ name: p.name, email: p.email });
-      r.ok ? (location.href = 'cuenta.html') : toast(r.error, false);
+      if (r.ok) {
+        // Replicar perfil de Google en Supabase (no bloqueante)
+        if (BookFlow.supabase?.isReady) {
+          BookFlow.supabase.upsertProfile({ email: p.email, name: p.name, since: new Date().toISOString(), google: true }).catch(() => {});
+        }
+        location.href = 'cuenta.html';
+      } else toast(r.error, false);
     } catch { toast('No se pudo iniciar sesión con Google.', false); }
   }
   function googleButton(el) {
@@ -212,6 +225,7 @@ if (!window.BookFlow || !BookFlow.users || !BookFlow.loans || !BookFlow.favorite
         <div class="tags">${b.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div>
         <h2>${esc(b.title)}</h2><p class="muted">Por ${esc(b.author)}</p>
         <p>★ ${b.rating} <span class="muted">(${b.reviews} reseñas)</span> · <span class="${left > 0 ? 'ok' : 'warn'}">${left > 0 ? `Disponible · ${left} de ${b.copies} copias` : 'En préstamo'}</span></p>
+        ${b.href ? `<p class="muted"><a href="${esc(resolveHref(b.href))}" target="_blank" rel="noopener noreferrer" style="color:var(--color-accent-orange);text-decoration:underline;font-size:0.92rem">📖 Leer en línea →</a></p>` : ''}
         <h3>Sinopsis</h3><p class="muted">${esc(b.synopsis)}</p>
         <dl class="specs">${spec('Género', b.genre)}${spec('Tema', b.topic)}${spec('Páginas', b.pages)}${spec('Año de publicación', b.year)}${spec('Editorial', b.publisher)}${spec('ISBN', b.isbn)}
           ${loan ? spec('Fecha de préstamo', fmt(loan.loanDate)) + spec('Fecha de devolución', fmt(loan.dueDate)) : ''}</dl>
@@ -258,8 +272,8 @@ if (!window.BookFlow || !BookFlow.users || !BookFlow.loans || !BookFlow.favorite
   function initBrowse(isLib) {
     const params = new URLSearchParams(location.search);
     const tab = params.get('tab') === 'favs' ? 'favs' : 'loans';
-    const genres = [...new Set(books.all().map((b) => b.genre))];
-    const SIZE = 8; let current = 1;
+    const allBooks = books.all() || [];
+    const genres = [...new Set(allBooks.map((b) => b && b.genre).filter(g => g && g.length > 0))];const SIZE = 8; let current = 1;
     if (isLib) $('#title').textContent = tab === 'favs' ? 'Favoritos' : 'Mi biblioteca';
 
     $('#browse').innerHTML = `<div class="browse">
@@ -282,27 +296,32 @@ if (!window.BookFlow || !BookFlow.users || !BookFlow.loans || !BookFlow.favorite
     if (params.get('q')) $('#q').value = params.get('q');
 
     // Libros de origen: todo el catálogo, los préstamos activos o los favoritos
-    const source = () => !isLib ? books.all().map((b) => ({ b }))
-      : tab === 'favs' ? favorites.list(user.email).map((b) => ({ b }))
-      : loans.active(user.email).map((l) => ({ b: books.get(l.bookId), note: 'Vence el ' + fmt(l.dueDate) }));
-
-    rerender = () => {
+    const source = () => {
+      return !isLib ? books.all().map((b) => ({b}))
+        : tab === 'favs' ? favorites.list(user.email).map((b) => ({b}))
+        : loans.active(user.email).map((l) => ({b: books.get(l.bookId), note: 'Vence el' + fmt(l.dueDate)}));
+    };
+    
+    rerender = async () => {
       const q = $('#q').value.trim().toLowerCase(), min = Number($('#f-rating').value), sort = $('#sort').value;
       const gs = $$('[data-genre]:checked').map((i) => i.dataset.genre);
       $('#rating-out').textContent = min.toFixed(1);
-      const list = source().filter(({ b }) => {
+      const local = source();
+      const list = local.filter(({ b }) => {
         const av = loans.availableCopies(b) > 0;
         const text = [b.title, b.author, b.topic, b.genre, ...b.tags].join(' ').toLowerCase();
         const dispOn = $('#f-disp').checked, prestOn = $('#f-prest').checked;
-        // Sin nada marcado (o con todo marcado) se muestran todos; si marcas una categoría, solo esa
         return (!gs.length || gs.includes(b.genre)) && b.rating >= min && text.includes(q) && (dispOn === prestOn || (av ? dispOn : prestOn));
       }).sort((x, y) => sort === 'rating' ? y.b.rating - x.b.rating : sort === 'title' ? x.b.title.localeCompare(y.b.title) : y.b.id - x.b.id);
 
       const pages = Math.max(1, Math.ceil(list.length / SIZE)); current = Math.min(current, pages);
       $('#count').textContent = `${list.length} ${list.length === 1 ? 'libro' : 'libros'}`;
-      const emptyText = isLib && !source().length
-        ? (tab === 'favs' ? 'Aún no tienes favoritos. Toca ♡ en cualquier libro.' : 'No tienes préstamos activos. Pide un libro desde el catálogo.')
-        : 'Ningún libro coincide con la búsqueda o los filtros.';
+      const src = local;
+      const emptyText = isLib && !src.length
+      ? (tab === 'favs' ? 'Aún no tienes favoritos. Toca ♡ en cualquier libro.' : 'No tienes préstamos activos. Pide un libro desde el catálogo.')
+      : !src || src.length === 0
+        ? 'No hay libros en el catálogo. Usa el buscador para encontrar alguno.'
+          : 'Ningún libro coincide con la búsqueda o los filtros.';
       $('#grid').innerHTML = list.slice((current - 1) * SIZE, current * SIZE).map(({ b, note }) => cardHTML(b, note)).join('') || `<p class="muted empty">${emptyText}</p>`;
       $('#pager').innerHTML = pages < 2 ? '' :
         `<button class="btn btn--icon" data-page="${current - 1}" ${current === 1 ? 'disabled' : ''} aria-label="Anterior">‹</button>` +
